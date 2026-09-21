@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Formulaire de contact</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+  }
+  .form-box {
+    background: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    width: 300px;
+  }
+  h2 { text-align: center; margin-bottom: 20px; }
+  input {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+  }
+  button {
+    width: 100%;
+    padding: 10px;
+    background: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+  button:hover { background: #1d4ed8; }
+  #status { text-align: center; margin-top: 10px; font-size: 14px; }
+</style>
+</head>
+<body>
+
+<div class="form-box">
+  <h2>Boîte aux lettres Numérique de la Pharmacie Kemayou</h2>
+  <form id="contactForm">
+    <input type="text" id="name" placeholder="Nom complet" required>
+    <input type="tel" id="phone" placeholder="Numéro de téléphone (ex : +33612345678)" required>
+    <button type="submit">Envoyer</button>
+  </form>
+  <p id="status"></p>
+</div>
+
+<script>
+document.getElementById('contactForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const name = document.getElementById('name').value;
+  const phone = document.getElementById('phone').value;
+  const status = document.getElementById('status');
+
+  status.textContent = "Envoi en cours...";
+
+  try {
+    await fetch('https://script.google.com/macros/s/AKfycbz7T4ija4hsPqIqCMsQ2v1vF_iBtXFsNwd6riq_CvkPtQ-A0Xp0y3Lps08usDYpqSeh/exec', {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify({ name, phone })
+    });
+    status.textContent = "Merci ! Vos informations ont bien été reçues.";
+    document.getElementById('contactForm').reset();
+  } catch (err) {
+    status.textContent = "Une erreur est survenue. Réessayez.";
+  }
+});
+</script>
+
+</body>
+</html>
